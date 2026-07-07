@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fat &amp; Weird Cookie — Odoo Guide</title>
+<meta name="description" content="How Fat & Weird Cookie's Odoo customizations work and how to use them.">
+<!-- maintained by the odoo-customization-docs skill; bump on every production push -->
+<meta name="docs-last-documented" content="2026-07-07">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#c9782d; --red-dark:#a15f1f; --ink:#2a211a; --ink-soft:#5c5147;
+  --paper:#f7f1e7; --card:#fffdf7; --line:#e0d6c4; --line-strong:#c3b49a;
+  --mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+  --disp:'Barlow Condensed','Arial Narrow',sans-serif;
+  --body:'Barlow','Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{font-family:var(--body);color:var(--ink);background:var(--paper);line-height:1.55;font-size:16px}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.35;z-index:0;
+  background-image:radial-gradient(rgba(42,33,26,.05) 1px,transparent 1px);background-size:22px 22px}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:50;background:var(--ink);color:#f4ede2;border-bottom:4px solid var(--red)}
+.hazard{height:8px;background:repeating-linear-gradient(-45deg,var(--red) 0 14px,#8a5117 14px 28px)}
+.masthead{display:flex;align-items:baseline;gap:18px;padding:14px 28px;flex-wrap:wrap}
+.masthead .brand{font-family:var(--disp);font-weight:700;font-size:30px;letter-spacing:.06em;text-transform:uppercase}
+.masthead .brand em{color:var(--red);font-style:normal}
+.masthead .sub{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#c2b299}
+.masthead .stamp{margin-left:auto;font-family:var(--mono);font-size:11px;color:#9a8c78;letter-spacing:.08em}
+
+/* ---------- layout ---------- */
+.wrap{display:grid;grid-template-columns:264px minmax(0,1fr);max-width:1240px;margin:0 auto;position:relative;z-index:1}
+nav{position:sticky;top:84px;align-self:start;height:calc(100vh - 84px);overflow-y:auto;
+  padding:26px 18px 40px 26px;border-right:1px solid var(--line)}
+nav .find{width:100%;font-family:var(--mono);font-size:12px;padding:8px 10px;border:1.5px solid var(--line-strong);
+  background:var(--card);color:var(--ink);outline:none;margin-bottom:20px}
+nav .find:focus{border-color:var(--red)}
+nav .grp{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);
+  margin:18px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+nav a{display:flex;gap:9px;align-items:baseline;padding:5px 6px;color:var(--ink);text-decoration:none;font-size:14.5px;font-weight:500}
+nav a .no{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);min-width:22px}
+nav a:hover{color:var(--red)}
+nav a.on{background:var(--ink);color:#f4ede2}
+nav a.on .no{color:var(--red)}
+main{padding:34px 40px 120px;min-width:0}
+
+/* ---------- sections ---------- */
+section{margin-bottom:56px;scroll-margin-top:96px}
+.sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:3px solid var(--ink);padding-bottom:8px;margin-bottom:6px}
+.sec-head .no{font-family:var(--mono);font-size:13px;color:var(--red);font-weight:600;letter-spacing:.08em}
+.sec-head h2{font-family:var(--disp);font-weight:700;font-size:34px;letter-spacing:.03em;text-transform:uppercase}
+.sec-lede{color:var(--ink-soft);margin:10px 0 22px;max-width:70ch}
+
+.card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--ink);padding:20px 24px 18px;margin-bottom:18px;
+  box-shadow:0 1px 0 rgba(42,33,26,.05)}
+.card h3{font-family:var(--disp);font-size:22px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;margin-bottom:10px}
+.card.hot{border-left-color:var(--red)}
+.lbl{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin:14px 0 5px}
+.lbl:first-of-type{margin-top:2px}
+.card ul{list-style:none;margin:0 0 2px}
+.card li{padding:3px 0 3px 18px;position:relative;max-width:78ch}
+.card li::before{content:"";position:absolute;left:2px;top:.72em;width:8px;height:2px;background:var(--red)}
+.card p{max-width:78ch;margin:4px 0}
+
+.chip{display:inline-block;font-family:var(--mono);font-size:.8em;font-weight:500;background:#efe7d6;border:1px solid var(--line-strong);
+  border-bottom-width:2px;border-radius:4px;padding:0 7px;white-space:nowrap}
+.chip.red{background:var(--red);border-color:var(--red-dark);color:#fff}
+.path{font-family:var(--mono);font-size:.82em;color:var(--ink-soft)}
+.note{background:#f5eede;border:1px solid #e3d7b6;border-left:4px solid #c9a227;padding:10px 14px;font-size:14.5px;margin:12px 0 4px;max-width:78ch}
+.note b{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8a6d12;display:block;margin-bottom:2px}
+
+/* ---------- changelog ---------- */
+.log{border-left:2px solid var(--line-strong);margin-left:6px;padding-left:26px}
+.log-entry{position:relative;margin-bottom:30px}
+.log-entry::before{content:"";position:absolute;left:-32px;top:6px;width:10px;height:10px;background:var(--red);border-radius:50%}
+.log-date{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;color:var(--red)}
+.log-entry h4{font-family:var(--disp);font-size:19px;font-weight:600;text-transform:uppercase;letter-spacing:.02em;margin:2px 0 6px}
+.log-entry ul{list-style:none}
+.log-entry li{padding:2px 0 2px 16px;position:relative;max-width:80ch}
+.log-entry li::before{content:"";position:absolute;left:0;top:.72em;width:7px;height:2px;background:var(--line-strong)}
+
+footer{border-top:1px solid var(--line);margin-top:30px;padding:18px 0 0;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);letter-spacing:.05em}
+mark{background:#ffe27a;padding:0 2px}
+.hidden{display:none}
+
+@media (max-width:900px){
+  .wrap{grid-template-columns:1fr}
+  nav{position:static;height:auto;border-right:none;border-bottom:1px solid var(--line);padding:18px 22px}
+  main{padding:26px 22px 90px}
+  .masthead{padding:12px 18px}
+}
+@media print{
+  header,nav{display:none}
+  body::before{display:none}
+  .wrap{display:block}
+  .card{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="hazard"></div>
+  <div class="masthead">
+    <span class="brand">Fat &amp; Weird <em>Cookie</em></span>
+    <span class="sub">Odoo Warehouse Guide</span>
+    <span class="stamp" id="stamp">Updated 2026-07-07</span>
+  </div>
+</header>
+
+<div class="wrap">
+<nav id="nav">
+  <input class="find" id="find" type="search" placeholder="FILTER… (e.g. PIN)" aria-label="Filter the guide">
+  <div class="grp">Warehouse Tablet App</div>
+  <a href="#signin"><span class="no">01</span>Signing In</a>
+  <a href="#pin"><span class="no">02</span>Your PIN</a>
+  <a href="#sessions"><span class="no">03</span>Staying Signed In</a>
+  <div class="grp">History</div>
+  <a href="#changelog"><span class="no">04</span>Changelog</a>
+</nav>
+
+<main id="main">
+
+<!-- ============================ 01 SIGNING IN ============================ -->
+<section id="signin">
+  <div class="sec-head"><span class="no">§01</span><h2>Signing In</h2></div>
+  <p class="sec-lede">The warehouse tablet app now signs in once before it can be used. This is the tablet's login — your personal PIN comes right after and identifies each scan.</p>
+
+  <div class="card hot">
+    <h3>Sign the tablet in</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>When the app opens it now shows a <b>sign-in screen</b> asking for a username and password. Signing in unlocks the app on that tablet for the rest of the session.</li>
+      <li>This replaces the old behavior where the app opened straight to work — the sign-in is what lets the app talk to Odoo securely.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Enter the warehouse Odoo <b>username and password</b> for the tablet and press <span class="chip red">Sign In</span>.</li>
+      <li>You won't be asked again until the session ends — see <b>Staying Signed In</b> (§03).</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>This is the <b>app/tablet login</b>, not your personal PIN. After signing in you'll pick your name and enter your PIN (§02).</li>
+      <li>If you don't know the tablet's sign-in username or password, ask a manager — it's a normal Odoo login, set up once per tablet.</li>
+    </ul>
+    <div class="note"><b>After this update</b>Reload the tablet once (pull down to refresh, or reload the page) so it picks up the new version. If the app looks stuck or throws an error right after the update, a refresh clears it.</div>
+  </div>
+
+  <div class="card">
+    <h3>If sign-in won't go through</h3>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>A wrong username or password shows <span class="chip">Invalid username or password</span> — re-check both; passwords are case-sensitive.</li>
+      <li>Too many wrong tries in a row will <b>temporarily lock sign-in for that location</b> for a few minutes. If you see <span class="chip">Too many login attempts</span>, wait a few minutes and try again with the correct password.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 02 PIN ============================ -->
+<section id="pin">
+  <div class="sec-head"><span class="no">§02</span><h2>Your PIN</h2></div>
+  <p class="sec-lede">Once the tablet is signed in, each person enters their own 4-digit PIN. This stamps every scan — DoorDash, scrap, receiving, counts — with who did it.</p>
+
+  <div class="card">
+    <h3>Enter your PIN</h3>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Pick your name, then type your <b>4-digit PIN</b>. That's it — you're in.</li>
+      <li>Handing the tablet to someone else? Use <span class="chip">Not you? Switch employee</span> so their scans are recorded under their name.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>Your Employee record must have a PIN set. If you see <span class="chip">No PIN set for this employee — ask a manager to set one in Employees</span>, a manager needs to set your PIN before you can continue.</li>
+      <li>Managers set it at <span class="path">Employees → (the person) → HR Settings → PIN Code</span>.</li>
+      <li>There's no "any PIN works" shortcut — a blank or wrong PIN is rejected. This is deliberate, so scans are always tied to a real person.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 03 SESSIONS ============================ -->
+<section id="sessions">
+  <div class="sec-head"><span class="no">§03</span><h2>Staying Signed In</h2></div>
+  <p class="sec-lede">A tablet sign-in lasts about half a day, then the app asks you to sign in again.</p>
+
+  <div class="card">
+    <h3>How long a sign-in lasts</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>A tablet stays signed in for about <b>12 hours</b>. After that the app returns to the sign-in screen on its own.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>If the app suddenly shows the <b>sign-in screen mid-shift</b>, the session simply expired — sign in again and carry on. Nothing you scanned is lost.</li>
+      <li>Your PIN is separate from the tablet sign-in — after a re-sign-in you'll enter your PIN again too.</li>
+      <li>Want a longer (or shorter) window before re-sign-in? A manager can ask Brapps to adjust it.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 04 CHANGELOG ============================ -->
+<section id="changelog">
+  <div class="sec-head"><span class="no">§04</span><h2>Changelog</h2></div>
+  <p class="sec-lede">What changed in the warehouse app, newest first.</p>
+
+  <div class="log">
+
+    <div class="log-entry">
+      <div class="log-date">2026-07-07</div>
+      <h4>Sign-in hardening</h4>
+      <ul>
+        <li>Repeated wrong passwords now <b>temporarily lock sign-in for that location</b> for a few minutes — a guard against password guessing.</li>
+        <li>Behind the scenes: expired tablet sign-ins are cleaned up automatically, and warehouse actions now record <b>which operator</b> performed them.</li>
+      </ul>
+    </div>
+
+    <div class="log-entry">
+      <div class="log-date">2026-07-06</div>
+      <h4>Warehouse app sign-in &amp; PINs</h4>
+      <ul>
+        <li>The warehouse app now requires a <b>one-time tablet sign-in</b> (username + password) before use, and stays signed in for about 12 hours.</li>
+        <li>Each operator enters a <b>4-digit PIN</b> so every scan is attributed to them.</li>
+        <li>Your PIN must be set on your Employee record — a missing PIN now shows a clear "ask a manager to set one" message instead of quietly letting anyone through.</li>
+        <li>Fixed: DoorDash, scrap, and receiving submissions that were failing with an <b>"Authentication required"</b> error.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <footer>FAT &amp; WEIRD COOKIE · ODOO WAREHOUSE GUIDE — maintained by Brapps. Questions or something out of date? Tell Bryan.</footer>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+  // scrollspy
+  var links=[].slice.call(document.querySelectorAll('nav a'));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'))});
+  var obs=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id)});
+      }
+    });
+  },{rootMargin:'-20% 0px -70% 0px'});
+  secs.forEach(function(s){s&&obs.observe(s)});
+
+  // filter
+  var find=document.getElementById('find');
+  var cards=[].slice.call(document.querySelectorAll('.card,.log-entry'));
+  find.addEventListener('input',function(){
+    var q=find.value.trim().toLowerCase();
+    cards.forEach(function(c){
+      c.classList.toggle('hidden',!!q&&c.textContent.toLowerCase().indexOf(q)===-1);
+    });
+    document.querySelectorAll('section').forEach(function(s){
+      var any=!q||[].some.call(s.querySelectorAll('.card,.log-entry'),function(c){return !c.classList.contains('hidden')});
+      s.classList.toggle('hidden',!any);
+    });
+  });
+})();
+</script>
+</body>
+</html>
