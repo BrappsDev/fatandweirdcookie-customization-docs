@@ -6,7 +6,7 @@
 <title>Fat &amp; Weird Cookie — Odoo Guide</title>
 <meta name="description" content="How Fat & Weird Cookie's Odoo customizations work and how to use them.">
 <!-- maintained by the odoo-customization-docs skill; bump on every production push -->
-<meta name="docs-last-documented" content="2026-07-07">
+<meta name="docs-last-documented" content="2026-07-16">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="masthead">
     <span class="brand">Fat &amp; Weird <em>Cookie</em></span>
     <span class="sub">Odoo Warehouse Guide</span>
-    <span class="stamp" id="stamp">Updated 2026-07-07</span>
+    <span class="stamp" id="stamp">Updated 2026-07-16</span>
   </div>
 </header>
 
@@ -119,8 +119,10 @@ mark{background:#ffe27a;padding:0 2px}
   <a href="#signin"><span class="no">01</span>Signing In</a>
   <a href="#pin"><span class="no">02</span>Your PIN</a>
   <a href="#sessions"><span class="no">03</span>Staying Signed In</a>
+  <div class="grp">Manufacturing</div>
+  <a href="#batches"><span class="no">04</span>Cookie Batches</a>
   <div class="grp">History</div>
-  <a href="#changelog"><span class="no">04</span>Changelog</a>
+  <a href="#changelog"><span class="no">05</span>Changelog</a>
 </nav>
 
 <main id="main">
@@ -201,12 +203,44 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 </section>
 
-<!-- ============================ 04 CHANGELOG ============================ -->
+<!-- ============================ 04 COOKIE BATCHES ============================ -->
+<section id="batches">
+  <div class="sec-head"><span class="no">§04</span><h2>Cookie Batches</h2></div>
+  <p class="sec-lede">When you confirm a frozen cookie manufacturing order, Odoo automatically creates the matching Dough and Core batches underneath it, sized from the recipe.</p>
+
+  <div class="card">
+    <h3>Dough &amp; Core auto-create from a cookie order</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Confirming a frozen cookie <b>Manufacturing Order</b> automatically raises two linked orders — one for the <b>Dough</b> and one for the <b>Core</b> — for the exact amount that batch of cookies needs.</li>
+      <li>Each linked order lists the ingredient amounts to pull, straight from that recipe.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Create and confirm the cookie order as usual — the Dough and Core orders appear on their own. Open them to see the ingredients for the run.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>Dough and Core amounts are driven by the recipe's <b>batch size</b>, measured in <b>ounces</b>. If a Dough or Core order ever calls for an amount that looks far too small or too large, its recipe's batch unit is the thing to check — flag it to Bryan and it can be corrected.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 05 CHANGELOG ============================ -->
 <section id="changelog">
-  <div class="sec-head"><span class="no">§04</span><h2>Changelog</h2></div>
-  <p class="sec-lede">What changed in the warehouse app, newest first.</p>
+  <div class="sec-head"><span class="no">§05</span><h2>Changelog</h2></div>
+  <p class="sec-lede">What changed in your Odoo customizations, newest first.</p>
 
   <div class="log">
+
+    <div class="log-entry">
+      <div class="log-date">2026-07-16</div>
+      <h4>Correct Dough &amp; Core amounts on cookie orders</h4>
+      <ul>
+        <li>Confirming certain frozen cookie orders was creating Dough and Core batches that called for <b>far too little</b> of each ingredient. Those recipes have been corrected and the amounts now match the recipe.</li>
+        <li>The step that sizes Dough and Core batches was also hardened so this can't happen again when a new cookie is set up.</li>
+      </ul>
+    </div>
 
     <div class="log-entry">
       <div class="log-date">2026-07-07</div>
