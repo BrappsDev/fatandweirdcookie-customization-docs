@@ -268,15 +268,22 @@ mark{background:#ffe27a;padding:0 2px}
 
     <div class="log-entry">
       <div class="log-date">2026-08-13 · PENDING PRODUCTION PUSH</div>
-      <h4>Shopify invoice accuracy, KeHE EDI &amp; product setup fixes</h4>
+      <h4>Shopify invoice accuracy &amp; KeHE EDI fixes</h4>
       <ul>
-        <li>Fixed: the <span class="chip">Create New Product</span> tool (Inventory app) was failing with a <b>"can't find 'Regular Roll Film' product"</b> error after the roll film products were renamed. The tool now finds the right roll film by its <b>internal reference</b> instead of its name, so renaming those products can't break it again.</li>
         <li>Fixed: when a Shopify order shipped in more than one package, its discount, shipping, and tax charges could be billed in full on the <b>first</b> shipment instead of matching what had actually gone out — invoices now bill those charges in step with delivery.</li>
         <li>Fixed: some orders were staying marked <b>To Invoice</b> in Odoo even after everything on them had genuinely been billed.</li>
         <li>Fixed: a small number of orders were being charged <b>sales tax twice</b>, or picked up an extra packaging-box charge nobody ordered.</li>
         <li>Fixed: electronic (EDI) documents meant for KeHE were also being sent for KeHE orders that actually came through the <b>Shopify wholesale site</b> — KeHE rejected them all. EDI replies now go out only for orders that arrived through the EDI connection (§05).</li>
         <li>EDI ship notices and invoices now carry KeHE's <b>location codes</b> in the exact format KeHE requires, and delivery charges no longer appear as product lines on electronic invoices.</li>
         <li>Currently in testing — this entry will move to a dated changelog line once verified and live.</li>
+      </ul>
+    </div>
+
+    <div class="log-entry">
+      <div class="log-date">2026-08-13</div>
+      <h4>Create New Product fix</h4>
+      <ul>
+        <li>Fixed: the <span class="chip">Create New Product</span> tool (Inventory app) was failing with a <b>"can't find 'Regular Roll Film' product"</b> error after the roll film products were renamed. The tool now finds the right roll film by its <b>internal reference</b> instead of its name, so renaming those products can't break it again.</li>
       </ul>
     </div>
 
