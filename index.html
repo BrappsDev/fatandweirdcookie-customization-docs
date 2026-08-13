@@ -121,8 +121,10 @@ mark{background:#ffe27a;padding:0 2px}
   <a href="#sessions"><span class="no">03</span>Staying Signed In</a>
   <div class="grp">Manufacturing</div>
   <a href="#batches"><span class="no">04</span>Cookie Batches</a>
+  <div class="grp">Sales &amp; EDI</div>
+  <a href="#kehe"><span class="no">05</span>KeHE EDI Orders</a>
   <div class="grp">History</div>
-  <a href="#changelog"><span class="no">05</span>Changelog</a>
+  <a href="#changelog"><span class="no">06</span>Changelog</a>
 </nav>
 
 <main id="main">
@@ -226,20 +228,53 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 </section>
 
-<!-- ============================ 05 CHANGELOG ============================ -->
+<!-- ============================ 05 KEHE EDI ============================ -->
+<section id="kehe">
+  <div class="sec-head"><span class="no">§05</span><h2>KeHE EDI Orders</h2></div>
+  <p class="sec-lede">KeHE sends purchase orders to Fat &amp; Weird electronically (EDI). Those orders appear in Odoo on their own, and as you work them, Odoo answers KeHE back electronically at each step — no manual uploads.</p>
+
+  <div class="card hot">
+    <h3>Orders from KeHE arrive on their own</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>When KeHE issues a purchase order over the EDI network, a matching <b>sales order appears in Odoo automatically</b>, carrying KeHE's PO number and requested delivery date.</li>
+      <li>As you process that order, KeHE is answered automatically: <b>confirming</b> it sends an order acknowledgment, <b>validating the delivery</b> sends a ship notice, and <b>posting the invoice</b> sends the invoice — each step leaves a "sent to SPS" note in the record's log.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Nothing extra — confirm, ship, and invoice the order the way you always do. The electronic replies ride along on their own.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Which orders send EDI documents</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Only orders that <b>arrived through the EDI connection</b> send documents back to KeHE. KeHE orders placed through the Shopify wholesale site are invoiced the normal way and send <b>no</b> EDI documents.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>KeHE rejects documents that are missing required details. For every product KeHE buys, the <b>barcode (UPC)</b> must be filled in on the product, and the KeHE orders need <b>payment terms</b> set — if KeHE reports a rejected document, those are the first things to check.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 06 CHANGELOG ============================ -->
 <section id="changelog">
-  <div class="sec-head"><span class="no">§05</span><h2>Changelog</h2></div>
+  <div class="sec-head"><span class="no">§06</span><h2>Changelog</h2></div>
   <p class="sec-lede">What changed in your Odoo customizations, newest first.</p>
 
   <div class="log">
 
     <div class="log-entry">
       <div class="log-date">2026-08-13 · PENDING PRODUCTION PUSH</div>
-      <h4>More accurate Shopify order invoices</h4>
+      <h4>Shopify invoice accuracy &amp; KeHE EDI fixes</h4>
       <ul>
         <li>Fixed: when a Shopify order shipped in more than one package, its discount, shipping, and tax charges could be billed in full on the <b>first</b> shipment instead of matching what had actually gone out — invoices now bill those charges in step with delivery.</li>
         <li>Fixed: some orders were staying marked <b>To Invoice</b> in Odoo even after everything on them had genuinely been billed.</li>
         <li>Fixed: a small number of orders were being charged <b>sales tax twice</b>, or picked up an extra packaging-box charge nobody ordered.</li>
+        <li>Fixed: electronic (EDI) documents meant for KeHE were also being sent for KeHE orders that actually came through the <b>Shopify wholesale site</b> — KeHE rejected them all. EDI replies now go out only for orders that arrived through the EDI connection (§05).</li>
+        <li>EDI ship notices and invoices now carry KeHE's <b>location codes</b> in the exact format KeHE requires, and delivery charges no longer appear as product lines on electronic invoices.</li>
         <li>Currently in testing — this entry will move to a dated changelog line once verified and live.</li>
       </ul>
     </div>
