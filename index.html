@@ -6,7 +6,7 @@
 <title>Fat &amp; Weird Cookie — Odoo Guide</title>
 <meta name="description" content="How Fat & Weird Cookie's Odoo customizations work and how to use them.">
 <!-- maintained by the odoo-customization-docs skill; bump on every production push -->
-<meta name="docs-last-documented" content="2026-08-19">
+<meta name="docs-last-documented" content="2026-08-21">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="masthead">
     <span class="brand">Fat &amp; Weird <em>Cookie</em></span>
     <span class="sub">Odoo Warehouse Guide</span>
-    <span class="stamp" id="stamp">Updated 2026-08-19</span>
+    <span class="stamp" id="stamp">Updated 2026-08-21</span>
   </div>
 </header>
 
@@ -267,9 +267,11 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="log">
 
     <div class="log-entry">
-      <div class="log-date">2026-08-19 · PENDING PRODUCTION PUSH</div>
-      <h4>Amazon order import restored · Shopify invoice accuracy &amp; KeHE EDI fixes</h4>
+      <div class="log-date">2026-08-21 · PENDING PRODUCTION PUSH</div>
+      <h4>Build Your Own Cookie Box fix · Amazon order import restored · Shopify invoice accuracy &amp; KeHE EDI fixes</h4>
       <ul>
+        <li>Fixed: starting <b>August 20</b>, website <b>Build Your Own Cookie Box</b> orders stopped listing the chosen cookie flavors in Odoo — the box came in as one generic "Bundle Item" line, leaving the warehouse with no pick list. The website's box builder had changed how it reports the chosen flavors; Odoo now understands the new format as well as all the earlier ones, so the individual cookies appear on the order again. If the box builder ever changes its format once more, Odoo now flags the mismatch instead of importing a blank box silently.</li>
+        <li>The handful of orders that imported without their flavors during the gap are being corrected separately.</li>
         <li>Fixed: on <b>August 10</b> Amazon changed how their systems hand out order information, which quietly stopped new Amazon orders from importing into Odoo. The connection has been rebuilt for Amazon's new system, so Amazon orders (both fulfilled-by-Amazon and shipped-from-the-warehouse) import again — along with the unshipped-orders email report and shipment confirmations back to Amazon.</li>
         <li>Amazon orders from the gap since August 10 aren't lost: they come in automatically as their settlement reports are processed, or can be pulled in one at a time with the <span class="chip">Recover Order</span> tool.</li>
         <li>Fixed: when a Shopify order shipped in more than one package, its discount, shipping, and tax charges could be billed in full on the <b>first</b> shipment instead of matching what had actually gone out — invoices now bill those charges in step with delivery.</li>
