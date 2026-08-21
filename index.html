@@ -268,10 +268,8 @@ mark{background:#ffe27a;padding:0 2px}
 
     <div class="log-entry">
       <div class="log-date">2026-08-21 · PENDING PRODUCTION PUSH</div>
-      <h4>Build Your Own Cookie Box fix · Amazon order import restored · Shopify invoice accuracy &amp; KeHE EDI fixes</h4>
+      <h4>Amazon order import restored · Shopify invoice accuracy &amp; KeHE EDI fixes</h4>
       <ul>
-        <li>Fixed: starting <b>August 20</b>, website <b>Build Your Own Cookie Box</b> orders stopped listing the chosen cookie flavors in Odoo — the box came in as one generic "Bundle Item" line, leaving the warehouse with no pick list. The website's box builder had changed how it reports the chosen flavors; Odoo now understands the new format as well as all the earlier ones, so the individual cookies appear on the order again. If the box builder ever changes its format once more, Odoo now flags the mismatch instead of importing a blank box silently.</li>
-        <li>The handful of orders that imported without their flavors during the gap are being corrected separately.</li>
         <li>Fixed: on <b>August 10</b> Amazon changed how their systems hand out order information, which quietly stopped new Amazon orders from importing into Odoo. The connection has been rebuilt for Amazon's new system, so Amazon orders (both fulfilled-by-Amazon and shipped-from-the-warehouse) import again — along with the unshipped-orders email report and shipment confirmations back to Amazon.</li>
         <li>Amazon orders from the gap since August 10 aren't lost: they come in automatically as their settlement reports are processed, or can be pulled in one at a time with the <span class="chip">Recover Order</span> tool.</li>
         <li>Fixed: when a Shopify order shipped in more than one package, its discount, shipping, and tax charges could be billed in full on the <b>first</b> shipment instead of matching what had actually gone out — invoices now bill those charges in step with delivery.</li>
@@ -280,6 +278,15 @@ mark{background:#ffe27a;padding:0 2px}
         <li>Fixed: electronic (EDI) documents meant for KeHE were also being sent for KeHE orders that actually came through the <b>Shopify wholesale site</b> — KeHE rejected them all. EDI replies now go out only for orders that arrived through the EDI connection (§05).</li>
         <li>EDI ship notices and invoices now carry KeHE's <b>location codes</b> in the exact format KeHE requires, and delivery charges no longer appear as product lines on electronic invoices.</li>
         <li>Currently in testing — this entry will move to a dated changelog line once verified and live.</li>
+      </ul>
+    </div>
+
+    <div class="log-entry">
+      <div class="log-date">2026-08-21</div>
+      <h4>Build Your Own Cookie Box flavors restored</h4>
+      <ul>
+        <li>Fixed: starting <b>August 20</b>, website <b>Build Your Own Cookie Box</b> orders stopped listing the chosen cookie flavors in Odoo — the box came in as one generic "Bundle Item" line, leaving the warehouse with no pick list. The website's box builder had changed how it reports the chosen flavors; Odoo now understands the new format as well as all the earlier ones, so the individual cookies appear on the order again. If the box builder ever changes its format once more, Odoo now flags the mismatch instead of importing a blank box silently.</li>
+        <li>The handful of orders that imported without their flavors during the gap are being corrected separately.</li>
       </ul>
     </div>
 
