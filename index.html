@@ -6,7 +6,7 @@
 <title>Fat &amp; Weird Cookie — Odoo Guide</title>
 <meta name="description" content="How Fat & Weird Cookie's Odoo customizations work and how to use them.">
 <!-- maintained by the odoo-customization-docs skill; bump on every production push -->
-<meta name="docs-last-documented" content="2026-08-21">
+<meta name="docs-last-documented" content="2026-08-31">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="masthead">
     <span class="brand">Fat &amp; Weird <em>Cookie</em></span>
     <span class="sub">Odoo Warehouse Guide</span>
-    <span class="stamp" id="stamp">Updated 2026-08-21</span>
+    <span class="stamp" id="stamp">Updated 2026-08-31</span>
   </div>
 </header>
 
@@ -123,8 +123,10 @@ mark{background:#ffe27a;padding:0 2px}
   <a href="#batches"><span class="no">04</span>Cookie Batches</a>
   <div class="grp">Sales &amp; EDI</div>
   <a href="#kehe"><span class="no">05</span>KeHE EDI Orders</a>
+  <div class="grp">AI Assistant</div>
+  <a href="#assistant"><span class="no">06</span>Asking ChatGPT</a>
   <div class="grp">History</div>
-  <a href="#changelog"><span class="no">06</span>Changelog</a>
+  <a href="#changelog"><span class="no">07</span>Changelog</a>
 </nav>
 
 <main id="main">
@@ -226,6 +228,25 @@ mark{background:#ffe27a;padding:0 2px}
       <li>Dough and Core amounts are driven by the recipe's <b>batch size</b>, measured in <b>ounces</b>. If a Dough or Core order ever calls for an amount that looks far too small or too large, its recipe's batch unit is the thing to check — flag it to Bryan and it can be corrected.</li>
     </ul>
   </div>
+
+  <div class="card">
+    <h3>Sending part of a run to GoPuff at Sealing</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>The <b>Sealing</b> quality worksheet can record that some — or all — of the day's cookies were bagged for <b>GoPuff</b> instead of the regular bag. Odoo then finishes the manufacturing order with the right split: so many regular cookies, so many GoPuff cookies, each under its own product.</li>
+      <li>GoPuff bags get counted too — the bags used come out of stock, and scrapped GoPuff bags are recorded just like regular bag scrap.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Fill in the Sealing worksheet as usual. When cookies went to GoPuff, tick <span class="chip">GoPuff Conversion?</span> near the scrap table — extra lines appear for the <b>number converted to GoPuff</b>, <b>GoPuff bags used</b>, and <b>GoPuff bags scrapped</b>.</li>
+      <li>On a day where <b>everything</b> went to GoPuff, enter the regular lines as zero — no more logging a regular cookie that was never made.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>The counts have to line up before the worksheet will complete: regular bags must match regular cookies, and GoPuff bags must match GoPuff cookies.</li>
+      <li>The worksheet only offers the conversion for flavours that have a GoPuff version. GoPuff <b>bag</b> counting switches on per flavour once its GoPuff bag is set up in the product list — until then only the converted-cookie count applies.</li>
+    </ul>
+  </div>
 </section>
 
 <!-- ============================ 05 KEHE EDI ============================ -->
@@ -260,16 +281,72 @@ mark{background:#ffe27a;padding:0 2px}
 </section>
 
 <!-- ============================ 06 CHANGELOG ============================ -->
+<!-- ============================ 06 AI ASSISTANT ============================ -->
+<section id="assistant">
+  <div class="sec-head"><span class="no">§06</span><h2>Asking ChatGPT</h2></div>
+  <p class="sec-lede">Odoo can now be connected to ChatGPT, so you can ask questions about your own Odoo data in plain English instead of building a report. Answering questions is switched on; letting the assistant <em>create</em> records is built but still switched off while it is checked.</p>
+
+  <div class="card">
+    <h3>Asking questions about Odoo data</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Once your ChatGPT account is connected, you can ask things like "what did we buy from each vendor last month", "how much of this cookie is on hand", or "which purchase orders haven't arrived yet", and the answer comes from live Odoo data.</li>
+      <li>The assistant can also pull the standard totals — purchases by vendor, purchases by month, stock on hand, sales by product and by customer.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Ask in your own words. If the assistant needs to know which product or vendor you mean, it will list the close matches and ask you to pick — it does not guess.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>The assistant sees <b>exactly what you can see</b> in Odoo and nothing more. It signs in as you, so your own permissions apply.</li>
+      <li>Access is granted per person. If ChatGPT says it isn't allowed to reach Odoo, your Odoo user needs to be given assistant access — ask Bryan.</li>
+      <li>Every question the assistant asks Odoo is recorded, so there is always a record of what was looked at and by whom.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Creating and updating records from a document — in testing</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>The groundwork is in place for uploading a document to ChatGPT — a vendor's purchase order, a customer's order, a recipe — and having the matching record drafted in Odoo.</li>
+      <li>This is <b>switched off</b> today. It gets turned on one capability at a time, after each is checked on real paperwork.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>When it is switched on, nothing is ever written straight away. The assistant first shows you exactly what it would do — which vendor and products it matched, and anything it could not identify — and only proceeds once you agree.</li>
+      <li>Anything it creates is left as a <b>draft</b> for a person to check and confirm. The assistant never confirms an order.</li>
+      <li>Records it touches carry a note in their message history saying the assistant made the change, who asked for it, and which document it came from — so an unexpected draft can always be traced.</li>
+      <li>Recipe changes go through the normal <b>approval</b> route, exactly as a change typed in by hand does. A recipe is never quietly altered.</li>
+      <li>Orders that arrive through Shopify, Amazon or KeHE EDI are left alone — those are managed by their own connections.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 07 CHANGELOG ============================ -->
 <section id="changelog">
-  <div class="sec-head"><span class="no">§06</span><h2>Changelog</h2></div>
+  <div class="sec-head"><span class="no">§07</span><h2>Changelog</h2></div>
   <p class="sec-lede">What changed in your Odoo customizations, newest first.</p>
 
   <div class="log">
 
     <div class="log-entry">
-      <div class="log-date">2026-08-21 · PENDING PRODUCTION PUSH</div>
-      <h4>Amazon order import restored · Shopify invoice accuracy &amp; KeHE EDI fixes</h4>
+      <div class="log-date">2026-08-31 · PENDING PRODUCTION PUSH</div>
+      <h4>ChatGPT connection fix · GoPuff conversion at Sealing</h4>
       <ul>
+        <li>Fixed: connecting ChatGPT to Odoo could fail with <b>"a network error occurred"</b> even though the sign-in and approval steps had already gone through. Odoo was answering one of the sign-in discovery addresses it should have left alone, which sent ChatGPT looking for account details this connection does not use. It now leaves that address alone and the connection completes.</li>
+        <li>If ChatGPT is already showing the connector as broken, remove it and add it again after this goes live.</li>
+        <li>New: the <b>Sealing</b> worksheet can send part — or all — of a run to <b>GoPuff</b>: tick <span class="chip">GoPuff Conversion?</span> and enter the cookies converted, GoPuff bags used, and GoPuff bags scrapped. The order finishes split between the regular and GoPuff products, and GoPuff bags come out of stock (§04).</li>
+        <li>All-GoPuff days no longer need a made-up regular-cookie entry — the regular lines can be zero.</li>
+      </ul>
+    </div>
+
+    <div class="log-entry">
+      <div class="log-date">2026-08-28</div>
+      <h4>ChatGPT connection to Odoo · Amazon order import restored · Shopify invoice accuracy &amp; KeHE EDI fixes</h4>
+      <ul>
+        <li>New: Odoo can be connected to <b>ChatGPT</b> so questions about your own Odoo data can be asked in plain English — purchases by vendor, stock on hand, outstanding purchase orders, sales by product (§06). The assistant signs in as you and sees only what you can see.</li>
+        <li>The ability for the assistant to <b>create or change</b> records from an uploaded document (a vendor purchase order, a customer order, a recipe) is built but deliberately <b>switched off</b> for now; it will be enabled one capability at a time after each is checked on real paperwork. When enabled it always previews the change for approval first, leaves records as drafts, and sends recipe changes through the normal approval route.</li>
         <li>Fixed: on <b>August 10</b> Amazon changed how their systems hand out order information, which quietly stopped new Amazon orders from importing into Odoo. The connection has been rebuilt for Amazon's new system, so Amazon orders (both fulfilled-by-Amazon and shipped-from-the-warehouse) import again — along with the unshipped-orders email report and shipment confirmations back to Amazon.</li>
         <li>Amazon orders from the gap since August 10 aren't lost: they come in automatically as their settlement reports are processed, or can be pulled in one at a time with the <span class="chip">Recover Order</span> tool.</li>
         <li>Fixed: when a Shopify order shipped in more than one package, its discount, shipping, and tax charges could be billed in full on the <b>first</b> shipment instead of matching what had actually gone out — invoices now bill those charges in step with delivery.</li>
@@ -277,7 +354,6 @@ mark{background:#ffe27a;padding:0 2px}
         <li>Fixed: a small number of orders were being charged <b>sales tax twice</b>, or picked up an extra packaging-box charge nobody ordered.</li>
         <li>Fixed: electronic (EDI) documents meant for KeHE were also being sent for KeHE orders that actually came through the <b>Shopify wholesale site</b> — KeHE rejected them all. EDI replies now go out only for orders that arrived through the EDI connection (§05).</li>
         <li>EDI ship notices and invoices now carry KeHE's <b>location codes</b> in the exact format KeHE requires, and delivery charges no longer appear as product lines on electronic invoices.</li>
-        <li>Currently in testing — this entry will move to a dated changelog line once verified and live.</li>
       </ul>
     </div>
 
