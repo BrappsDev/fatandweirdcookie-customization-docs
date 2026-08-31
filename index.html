@@ -244,7 +244,7 @@ mark{background:#ffe27a;padding:0 2px}
     <div class="lbl">Good to know</div>
     <ul>
       <li>The counts have to line up before the worksheet will complete: regular bags must match regular cookies, and GoPuff bags must match GoPuff cookies.</li>
-      <li>The worksheet only offers the conversion for flavours that have a GoPuff version. GoPuff <b>bag</b> counting switches on per flavour once its GoPuff bag is set up in the product list — until then only the converted-cookie count applies.</li>
+      <li>The worksheet only offers the conversion for flavours that have a GoPuff version, and it takes the GoPuff bag straight from that GoPuff product’s own recipe. If a flavour’s GoPuff recipe has no bag on it, the bag lines stay hidden and only the converted-cookie count applies.</li>
     </ul>
   </div>
 </section>
@@ -332,12 +332,20 @@ mark{background:#ffe27a;padding:0 2px}
 
     <div class="log-entry">
       <div class="log-date">2026-08-31 · PENDING PRODUCTION PUSH</div>
-      <h4>ChatGPT connection fix · GoPuff conversion at Sealing</h4>
+      <h4>GoPuff conversion at Sealing</h4>
       <ul>
-        <li>Fixed: connecting ChatGPT to Odoo could fail with <b>"a network error occurred"</b> even though the sign-in and approval steps had already gone through. Odoo was answering one of the sign-in discovery addresses it should have left alone, which sent ChatGPT looking for account details this connection does not use. It now leaves that address alone and the connection completes.</li>
-        <li>If ChatGPT is already showing the connector as broken, remove it and add it again after this goes live.</li>
         <li>New: the <b>Sealing</b> worksheet can send part — or all — of a run to <b>GoPuff</b>: tick <span class="chip">GoPuff Conversion?</span> and enter the cookies converted, GoPuff bags used, and GoPuff bags scrapped. The order finishes split between the regular and GoPuff products, and GoPuff bags come out of stock (§04).</li>
         <li>All-GoPuff days no longer need a made-up regular-cookie entry — the regular lines can be zero.</li>
+        <li>Awaiting a one-time setup step before the GoPuff section appears on the worksheet — this entry will move to a dated line once it is in place.</li>
+      </ul>
+    </div>
+
+    <div class="log-entry">
+      <div class="log-date">2026-08-31</div>
+      <h4>ChatGPT connection fix</h4>
+      <ul>
+        <li>Fixed: connecting ChatGPT to Odoo failed with <b>"a network error occurred"</b> even though the sign-in and approval steps had already gone through. ChatGPT opens the conversation using a newer version of the connection standard than Odoo recognised, and Odoo was turning the whole request away instead of simply answering in the version it does speak. It now accepts the newer greeting and settles on a shared version, so the connection completes.</li>
+        <li>If ChatGPT still shows the connector as broken, remove it and add it again — it remembers the earlier failure.</li>
       </ul>
     </div>
 
