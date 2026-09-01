@@ -6,7 +6,7 @@
 <title>Fat &amp; Weird Cookie — Odoo Guide</title>
 <meta name="description" content="How Fat & Weird Cookie's Odoo customizations work and how to use them.">
 <!-- maintained by the odoo-customization-docs skill; bump on every production push -->
-<meta name="docs-last-documented" content="2026-08-31">
+<meta name="docs-last-documented" content="2026-09-01">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="masthead">
     <span class="brand">Fat &amp; Weird <em>Cookie</em></span>
     <span class="sub">Odoo Warehouse Guide</span>
-    <span class="stamp" id="stamp">Updated 2026-08-31</span>
+    <span class="stamp" id="stamp">Updated 2026-09-01</span>
   </div>
 </header>
 
@@ -284,7 +284,7 @@ mark{background:#ffe27a;padding:0 2px}
 <!-- ============================ 06 AI ASSISTANT ============================ -->
 <section id="assistant">
   <div class="sec-head"><span class="no">§06</span><h2>Asking ChatGPT</h2></div>
-  <p class="sec-lede">Odoo can now be connected to ChatGPT, so you can ask questions about your own Odoo data in plain English instead of building a report. Answering questions is switched on; letting the assistant <em>create</em> records is built but still switched off while it is checked.</p>
+  <p class="sec-lede">Odoo can be connected to ChatGPT, so you can ask questions about your own Odoo data in plain English instead of building a report — and upload a document and have the matching record drafted for you. Nothing is ever saved without you seeing it first.</p>
 
   <div class="card">
     <h3>Asking questions about Odoo data</h3>
@@ -306,19 +306,59 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 
   <div class="card">
-    <h3>Creating and updating records from a document — in testing</h3>
+    <h3>Creating a purchase order from a vendor's document</h3>
     <div class="lbl">What it does</div>
     <ul>
-      <li>The groundwork is in place for uploading a document to ChatGPT — a vendor's purchase order, a customer's order, a recipe — and having the matching record drafted in Odoo.</li>
-      <li>This is <b>switched off</b> today. It gets turned on one capability at a time, after each is checked on real paperwork.</li>
+      <li>Upload a vendor's purchase order to ChatGPT and ask for it to be entered. It matches the vendor and every product against your own Odoo records and prepares a <b>draft</b> purchase order.</li>
+      <li>You can say where the goods are being received, and it sets the <span class="chip">Deliver To</span> operation accordingly — HQ, Raffield, or Peach State.</li>
+      <li>For ingredients arriving at Peach State, ask for it to be marked <span class="chip">Peachstate Inventory</span> and the receipt is routed to the Peach State ingredient stock location.</li>
+      <li>You can give a delivery date, and a time of day if you want one.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Attach the document and say what you want, for example "enter this as a purchase order, receiving at Peach State, expected the 9th".</li>
+      <li>Read the preview it shows you. It lists the vendor, every line it matched, the receipt location the goods will land in, and the expected date as you will see it in Odoo. Anything it could not identify is called out rather than guessed at.</li>
+      <li>Say yes and it saves the draft, then tells you which purchase order it created.</li>
     </ul>
     <div class="lbl">Good to know</div>
     <ul>
-      <li>When it is switched on, nothing is ever written straight away. The assistant first shows you exactly what it would do — which vendor and products it matched, and anything it could not identify — and only proceeds once you agree.</li>
-      <li>Anything it creates is left as a <b>draft</b> for a person to check and confirm. The assistant never confirms an order.</li>
+      <li>It always leaves the order as a <b>draft</b>. The assistant never confirms an order — a person does.</li>
+      <li>A date you give is read in your own timezone, so the date you asked for is the date the order shows.</li>
+      <li>If you ask for a receipt location that conflicts with the vendor's usual routing, it says so in the preview and uses the one you asked for.</li>
+      <li>The saved order is read back to confirm the receipt operation and stock location really are what you asked for — not just what was requested.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Updating a recipe from a document</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Upload a recipe and ask for it to be applied. You can change the ingredient amounts, the total quantity the recipe makes, or both in one go.</li>
+      <li>The preview shows an ingredient-by-ingredient comparison against the current recipe, plus the current and new total quantity.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Say what you want changed — "set this dough to make 4.7 and bump the flour to 105" works, and so does changing only the total.</li>
+      <li>Check the comparison, then agree.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>Recipe changes go through the normal <b>approval</b> route, exactly as a change typed in by hand does. You will get an approval reference back rather than a recipe that has already changed. A recipe is never quietly altered.</li>
+      <li>The recipe keeps its unit of measure. The assistant will not reinterpret your amounts into a different unit.</li>
+      <li>If nothing you asked for is actually different from the current recipe, it tells you so instead of raising a pointless approval.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>What the assistant will and will not do</h3>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li><b>Nothing is written straight away.</b> Every change is previewed first — what it matched, where it will go, and anything it could not identify — and only saved once you agree.</li>
+      <li>The assistant sees <b>exactly what you can see</b> in Odoo and nothing more. It signs in as you, so your own permissions apply.</li>
       <li>Records it touches carry a note in their message history saying the assistant made the change, who asked for it, and which document it came from — so an unexpected draft can always be traced.</li>
-      <li>Recipe changes go through the normal <b>approval</b> route, exactly as a change typed in by hand does. A recipe is never quietly altered.</li>
       <li>Orders that arrive through Shopify, Amazon or KeHE EDI are left alone — those are managed by their own connections.</li>
+      <li>Every request is recorded, so there is always a record of what was changed and by whom.</li>
+      <li>Treat a document from outside as you would any other: read the preview before agreeing. The preview is what stops an unexpected instruction inside a file from turning into a saved record.</li>
     </ul>
   </div>
 </section>
@@ -331,12 +371,24 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="log">
 
     <div class="log-entry">
-      <div class="log-date">2026-08-31 · PENDING PRODUCTION PUSH</div>
-      <h4>GoPuff conversion at Sealing</h4>
+      <div class="log-date">2026-09-01</div>
+      <h4>ChatGPT can now enter purchase orders and recipe changes</h4>
+      <ul>
+        <li>New: uploading a vendor's purchase order to ChatGPT drafts it in Odoo. You can say where the goods are received — it sets <span class="chip">Deliver To</span> for HQ, Raffield or Peach State — and mark it <span class="chip">Peachstate Inventory</span> so the receipt routes to the Peach State ingredient stock location. The preview shows the receipt operation and the stock location the goods will land in, and the saved order is read back to confirm both (§06).</li>
+        <li>New: you can give a delivery date, and a time of day if you want one. A bare date is read in your own timezone, so the date you ask for is the date the order shows — previously a date could appear as the day before (§06).</li>
+        <li>Fixed: a recipe's <b>total quantity</b> can now be changed on its own, or together with the ingredient amounts. Changing only the total previously reported that there was nothing to change and was not applied. The preview now shows the current and new total alongside the ingredient comparison (§06).</li>
+        <li>The recipe's unit of measure is left exactly as configured — amounts are never reinterpreted into a different unit (§06).</li>
+        <li>§06 has been rewritten: drafting records from a document is switched on and in use, not in testing as the guide previously said.</li>
+      </ul>
+    </div>
+
+    <div class="log-entry">
+      <div class="log-date">2026-09-01</div>
+      <h4>GoPuff conversion at Sealing · duplicated orders start clean</h4>
       <ul>
         <li>New: the <b>Sealing</b> worksheet can send part — or all — of a run to <b>GoPuff</b>: tick <span class="chip">GoPuff Conversion?</span> and enter the cookies converted, GoPuff bags used, and GoPuff bags scrapped. The order finishes split between the regular and GoPuff products, and GoPuff bags come out of stock (§04).</li>
         <li>All-GoPuff days no longer need a made-up regular-cookie entry — the regular lines can be zero.</li>
-        <li>Awaiting a one-time setup step before the GoPuff section appears on the worksheet — this entry will move to a dated line once it is in place.</li>
+        <li>Fixed: <b>duplicating</b> a manufacturing order no longer carries over the previous run's extra outputs — GoPuff conversions, flatties and weirdos — or the bags counted for them. A duplicate now starts from the recipe alone, as it should.</li>
       </ul>
     </div>
 
