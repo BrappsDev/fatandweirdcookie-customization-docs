@@ -6,7 +6,7 @@
 <title>Fat &amp; Weird Cookie — Odoo Guide</title>
 <meta name="description" content="How Fat & Weird Cookie's Odoo customizations work and how to use them.">
 <!-- maintained by the odoo-customization-docs skill; bump on every production push -->
-<meta name="docs-last-documented" content="2026-09-01">
+<meta name="docs-last-documented" content="2026-09-04">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="masthead">
     <span class="brand">Fat &amp; Weird <em>Cookie</em></span>
     <span class="sub">Odoo Warehouse Guide</span>
-    <span class="stamp" id="stamp">Updated 2026-09-01</span>
+    <span class="stamp" id="stamp">Updated 2026-09-04</span>
   </div>
 </header>
 
@@ -230,6 +230,22 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 
   <div class="card">
+    <h3>Finishing an order on the Shop Floor tablet</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Once the day's quantities are entered on the quality worksheet, the Shop Floor tablet shows a <span class="chip red">Close Production</span> button when the last work order is marked done. Pressing it finishes the manufacturing order and moves the finished cookies into stock right away.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Complete the worksheet and mark the work order done as usual. When it is the last one on the order, press <span class="chip red">Close Production</span> to finish the order on the spot.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>This button used to stay hidden unless the tablet page happened to be refreshed, which left finished orders sitting in <b>To Close</b> with their cookies not yet in stock. That is fixed — if you don't see the button after entering quantities on the last work order, flag it to Bryan.</li>
+    </ul>
+  </div>
+
+  <div class="card">
     <h3>Sending part of a run to GoPuff at Sealing</h3>
     <div class="lbl">What it does</div>
     <ul>
@@ -280,7 +296,6 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 </section>
 
-<!-- ============================ 06 CHANGELOG ============================ -->
 <!-- ============================ 06 AI ASSISTANT ============================ -->
 <section id="assistant">
   <div class="sec-head"><span class="no">§06</span><h2>Asking ChatGPT</h2></div>
@@ -302,6 +317,25 @@ mark{background:#ffe27a;padding:0 2px}
       <li>The assistant sees <b>exactly what you can see</b> in Odoo and nothing more. It signs in as you, so your own permissions apply.</li>
       <li>Access is granted per person. If ChatGPT says it isn't allowed to reach Odoo, your Odoo user needs to be given assistant access — ask Bryan.</li>
       <li>Every question the assistant asks Odoo is recorded, so there is always a record of what was looked at and by whom.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Validating receipts and deliveries</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Instead of opening each purchase order or sales order and pressing <b>Validate</b>, you can ask the assistant to validate the receipt or delivery for you — one at a time, or a batch: <em>"validate the receipts for P00445, P00446 and P00447"</em>.</li>
+      <li>It shows you the transfer first: its number, where the goods come from and <b>where they land</b>, every product with the quantity ordered against the quantity counted, and whether anything is short.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>Nothing is validated until you say so. The first answer is always a preview.</li>
+      <li>If an order has <b>more than one</b> open transfer — a backorder, a return, a split delivery — the assistant will not guess. It lists them and asks which one you mean.</li>
+      <li>Transfers that are already validated, or cancelled, are refused and reported rather than skipped over quietly.</li>
+      <li>If nothing has been counted yet, it <b>stops and tells you</b> instead of assuming the full quantity arrived. You have to say explicitly that everything came in.</li>
+      <li>When a transfer is short, the outstanding quantity is kept on a <b>backorder</b> by default, so nothing is lost. Cancelling the remainder is possible, but only if you ask for it.</li>
+      <li>In a batch, each transfer is handled on its own. One that will not validate does not undo the ones that already did — you get a line-by-line result saying which went through and why any did not.</li>
+      <li>It goes through Odoo's normal validation, so stock moves and accounting behave exactly as they do when you press the button yourself.</li>
     </ul>
   </div>
 
@@ -369,6 +403,25 @@ mark{background:#ffe27a;padding:0 2px}
   <p class="sec-lede">What changed in your Odoo customizations, newest first.</p>
 
   <div class="log">
+
+    <div class="log-entry">
+      <div class="log-date">2026-09-04</div>
+      <h4>Shop Floor: finished orders can be closed from the tablet again</h4>
+      <ul>
+        <li>Fixed: after the last work order was marked done, the <span class="chip red">Close Production</span> button often stayed hidden unless the tablet page was refreshed, so finished orders piled up in <b>To Close</b> and the cookies didn't show in stock until someone closed the order from the back office. The button now appears as soon as quantities are registered (§04).</li>
+      </ul>
+    </div>
+
+    <div class="log-entry">
+      <div class="log-date">2026-09-01</div>
+      <h4>Validating receipts and deliveries by asking ChatGPT</h4>
+      <ul>
+        <li>New: the assistant can validate the <b>receipt</b> on a purchase order or the <b>delivery</b> on a sales order, singly or in a batch, instead of opening each one and pressing Validate (§06).</li>
+        <li>It previews first — the transfer, where the goods land, ordered against counted quantities, and anything short — and validates only once you agree.</li>
+        <li>It will not guess between several open transfers, will not touch one already validated or cancelled, and will not assume a quantity that has not been counted.</li>
+        <li>Shortfalls keep their <b>backorder</b> by default, so outstanding quantities are never quietly cancelled.</li>
+      </ul>
+    </div>
 
     <div class="log-entry">
       <div class="log-date">2026-09-01</div>
