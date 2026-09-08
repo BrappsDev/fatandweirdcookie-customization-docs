@@ -6,7 +6,7 @@
 <title>Fat &amp; Weird Cookie — Odoo Guide</title>
 <meta name="description" content="How Fat & Weird Cookie's Odoo customizations work and how to use them.">
 <!-- maintained by the odoo-customization-docs skill; bump on every production push -->
-<meta name="docs-last-documented" content="2026-09-04">
+<meta name="docs-last-documented" content="2026-09-08">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="masthead">
     <span class="brand">Fat &amp; Weird <em>Cookie</em></span>
     <span class="sub">Odoo Warehouse Guide</span>
-    <span class="stamp" id="stamp">Updated 2026-09-04</span>
+    <span class="stamp" id="stamp">Updated 2026-09-08</span>
   </div>
 </header>
 
@@ -125,8 +125,10 @@ mark{background:#ffe27a;padding:0 2px}
   <a href="#kehe"><span class="no">05</span>KeHE EDI Orders</a>
   <div class="grp">AI Assistant</div>
   <a href="#assistant"><span class="no">06</span>Asking ChatGPT</a>
+  <div class="grp">Shipping</div>
+  <a href="#shipping"><span class="no">07</span>Shipping &amp; Tracking</a>
   <div class="grp">History</div>
-  <a href="#changelog"><span class="no">07</span>Changelog</a>
+  <a href="#changelog"><span class="no">08</span>Changelog</a>
 </nav>
 
 <main id="main">
@@ -397,12 +399,49 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 </section>
 
-<!-- ============================ 07 CHANGELOG ============================ -->
+<!-- ============================ 07 SHIPPING & TRACKING ============================ -->
+<section id="shipping">
+  <div class="sec-head"><span class="no">§07</span><h2>Shipping &amp; Tracking</h2></div>
+  <p class="sec-lede">Once an order is shipped in ShipStation, Odoo picks the shipment up on its own — it fills in the carrier and tracking number, marks the delivery done, and passes the tracking back to Amazon or Shopify. This section covers what to do on the rare occasion a delivery does not follow along.</p>
+
+  <div class="card">
+    <h3>When a delivery stays open after it shipped</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Odoo checks ShipStation on a schedule and closes off each delivery as it ships. If something stops a delivery from closing — a product on the shipment that no longer matches Odoo, a carrier Odoo has never seen — that delivery is set aside so the rest of the run is not held up, and it stops being checked until someone looks at it.</li>
+      <li>A delivery that has been set aside stays in <b>Ready</b> with the reason recorded on it, and its tracking is not sent to the sales channel until it closes.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Open <b>Inventory → Deliveries</b> and tick the deliveries that shipped but are still sitting in <b>Ready</b>.</li>
+      <li>In the <span class="chip">Actions</span> menu choose <span class="chip red">Re-check ShipStation Shipments</span>. Odoo clears the recorded reason and looks each one up in ShipStation again.</li>
+      <li>Anything that shipped closes out, picks up its carrier and tracking number, and the tracking goes to the sales channel on the next pass — normally within half an hour.</li>
+      <li>A single delivery can also be re-checked from its own form with the <span class="chip">Check Shipstation Order</span> button.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>Re-checking is safe to repeat — a delivery already closed is left alone, and one that still cannot be matched simply records its reason again.</li>
+      <li>Odoo only looks back <b>30 days</b>. A delivery left open longer than that has to be closed by hand.</li>
+      <li>If a marketplace cancels an order that has in fact already gone out, the order cannot simply be cancelled in Odoo — the goods have left. Those need a return so stock stays honest.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 08 CHANGELOG ============================ -->
 <section id="changelog">
-  <div class="sec-head"><span class="no">§07</span><h2>Changelog</h2></div>
+  <div class="sec-head"><span class="no">§08</span><h2>Changelog</h2></div>
   <p class="sec-lede">What changed in your Odoo customizations, newest first.</p>
 
   <div class="log">
+
+    <div class="log-entry">
+      <div class="log-date">2026-09-08 · PENDING PRODUCTION PUSH</div>
+      <h4>Amazon deliveries close again once ShipStation ships them</h4>
+      <ul>
+        <li>Fixed: since mid-August, Amazon deliveries that had been shipped in ShipStation were not closing in Odoo, so their tracking numbers never reached Amazon. Deliveries now close as soon as ShipStation reports the shipment, and the tracking goes across as it used to (§07).</li>
+        <li>New: several deliveries can be looked up in ShipStation again at once — tick them in <b>Deliveries</b> and choose <span class="chip red">Re-check ShipStation Shipments</span> from the <span class="chip">Actions</span> menu. Previously this could only be done one delivery at a time (§07).</li>
+      </ul>
+    </div>
 
     <div class="log-entry">
       <div class="log-date">2026-09-04</div>
