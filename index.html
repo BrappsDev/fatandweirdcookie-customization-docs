@@ -6,7 +6,7 @@
 <title>Fat &amp; Weird Cookie — Odoo Guide</title>
 <meta name="description" content="How Fat & Weird Cookie's Odoo customizations work and how to use them.">
 <!-- maintained by the odoo-customization-docs skill; bump on every production push -->
-<meta name="docs-last-documented" content="2026-09-08">
+<meta name="docs-last-documented" content="2026-09-14">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="masthead">
     <span class="brand">Fat &amp; Weird <em>Cookie</em></span>
     <span class="sub">Odoo Warehouse Guide</span>
-    <span class="stamp" id="stamp">Updated 2026-09-08</span>
+    <span class="stamp" id="stamp">Updated 2026-09-14</span>
   </div>
 </header>
 
@@ -235,15 +235,15 @@ mark{background:#ffe27a;padding:0 2px}
     <h3>Finishing an order on the Shop Floor tablet</h3>
     <div class="lbl">What it does</div>
     <ul>
-      <li>Once the day's quantities are entered on the quality worksheet, the Shop Floor tablet shows a <span class="chip red">Close Production</span> button when the last work order is marked done. Pressing it finishes the manufacturing order and moves the finished cookies into stock right away.</li>
+      <li>Baked cookie orders now finish <b>by themselves</b>: when the last work order is marked done on the Shop Floor, Odoo closes the manufacturing order and moves the finished cookies into stock right away. No extra tap needed.</li>
     </ul>
     <div class="lbl">How to use it</div>
     <ul>
-      <li>Complete the worksheet and mark the work order done as usual. When it is the last one on the order, press <span class="chip red">Close Production</span> to finish the order on the spot.</li>
+      <li>Complete the worksheet and mark the work order done as usual — that's it. Frozen orders still wait for a manager's approval, and Peach State orders still go through their review step, exactly as before.</li>
     </ul>
     <div class="lbl">Good to know</div>
     <ul>
-      <li>This button used to stay hidden unless the tablet page happened to be refreshed, which left finished orders sitting in <b>To Close</b> with their cookies not yet in stock. That is fixed — if you don't see the button after entering quantities on the last work order, flag it to Bryan.</li>
+      <li>If something stops an order from closing (for example a quantity problem), it stays in <b>To Close</b> and a note explaining why is posted right on the order — check the order's message thread and flag it to Bryan if it isn't clear.</li>
     </ul>
   </div>
 
@@ -435,7 +435,24 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="log">
 
     <div class="log-entry">
-      <div class="log-date">2026-09-08 · PENDING PRODUCTION PUSH</div>
+      <div class="log-date">2026-09-14</div>
+      <h4>Baked orders close themselves when the last work order is done</h4>
+      <ul>
+        <li>New: finishing the last work order of a baked cookie order on the Shop Floor now closes the manufacturing order automatically and puts the cookies into stock — the <span class="chip red">Close Production</span> tap is no longer needed for baked orders (§04).</li>
+        <li>Frozen and Peach State orders are unchanged: they still wait for their manager review before closing.</li>
+        <li>If an order can't close on its own, it stays in <b>To Close</b> and posts a note on the order saying why, instead of getting quietly stuck.</li>
+      </ul>
+      <h4>Asking ChatGPT about a date range now means your dates</h4>
+      <ul>
+        <li>Fixed: asking the assistant for records "completed on the 8th", or for a particular month, was reading the day as UTC rather than your own time. A day's worth of results started at 7pm the evening before, so the answer quietly included the tail of the previous day and missed the tail of the one you asked for. Date ranges now mean midnight to midnight where you are (§06).</li>
+        <li>Asking for an exact date on something that carries a time — a completed shipment, for instance — is now answered with a prompt to give a range instead. Previously it matched only the exact instant of midnight and came back empty, which looked like a real answer of "none" (§06).</li>
+        <li>Faster: the assistant can now pull a batch of linked records in one go, rather than fetching them one at a time. Questions that span hundreds of orders — "what shipped last fortnight and which of those were wholesale" — return instead of stalling partway (§06).</li>
+        <li>Answers that run to more records than fit now say how many matched in total and where the next page starts, so a partial answer can never be mistaken for the whole picture (§06).</li>
+      </ul>
+    </div>
+
+    <div class="log-entry">
+      <div class="log-date">2026-09-08</div>
       <h4>Amazon deliveries close again once ShipStation ships them</h4>
       <ul>
         <li>Fixed: since mid-August, Amazon deliveries that had been shipped in ShipStation were not closing in Odoo, so their tracking numbers never reached Amazon. Deliveries now close as soon as ShipStation reports the shipment, and the tracking goes across as it used to (§07).</li>
