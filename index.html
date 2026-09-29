@@ -6,7 +6,7 @@
 <title>Fat &amp; Weird Cookie — Odoo Guide</title>
 <meta name="description" content="How Fat & Weird Cookie's Odoo customizations work and how to use them.">
 <!-- maintained by the odoo-customization-docs skill; bump on every production push -->
-<meta name="docs-last-documented" content="2026-09-16">
+<meta name="docs-last-documented" content="2026-09-29">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="masthead">
     <span class="brand">Fat &amp; Weird <em>Cookie</em></span>
     <span class="sub">Odoo Warehouse Guide</span>
-    <span class="stamp" id="stamp">Updated 2026-09-16</span>
+    <span class="stamp" id="stamp">Updated 2026-09-29</span>
   </div>
 </header>
 
@@ -445,6 +445,26 @@ mark{background:#ffe27a;padding:0 2px}
       <li>An order still <b>Awaiting Shipment</b> in ShipStation is left open in Odoo on purpose — only shipped or cancelled counts as final.</li>
     </ul>
   </div>
+  <div class="card">
+    <h3>When a delivery will not send to ShipStation ("403 Forbidden")</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>Shopify checkout add-ons attach hidden tracking codes to some orders. Those codes are random strings of symbols, and every so often one looks suspicious to ShipStation's security filter, which turns the whole order away with a <b>403 Forbidden</b> page.</li>
+      <li>Odoo now leaves those hidden codes out: they are no longer copied into the order's notes, and they are never sent to ShipStation. The order's real note — a PO number or delivery instructions — still goes across.</li>
+      <li>If ShipStation still turns an order away, Odoo sends the other orders in the same run on their own so they are not held up, then retries the blocked one once without its note.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Nothing new to press. Orders go to ShipStation as they do today.</li>
+      <li>If a delivery was sent without its note, the delivery's chatter says so. Add the note in ShipStation by hand if the packer needs it.</li>
+      <li>If a delivery still shows <b>Error sending shipstation orders … 403 Forbidden</b>, check its order note and address for unusual symbols, tidy them, then press <span class="chip red">Send to Shipstation</span> on the delivery.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>A 403 is about the order's content, not a ShipStation outage — other orders keep flowing while one is stuck.</li>
+      <li>Orders placed before this change may still show the hidden codes in their notes in Odoo; they are stripped when the order is sent.</li>
+    </ul>
+  </div>
 </section>
 
 <!-- ============================ 08 CHANGELOG ============================ -->
@@ -453,6 +473,15 @@ mark{background:#ffe27a;padding:0 2px}
   <p class="sec-lede">What changed in your Odoo customizations, newest first.</p>
 
   <div class="log">
+
+    <div class="log-entry">
+      <div class="log-date">2026-09-29</div>
+      <h4>Orders no longer rejected by ShipStation over hidden checkout codes</h4>
+      <ul>
+        <li>Fixed: a Shopify order could fail to reach ShipStation with <b>403 Forbidden</b> because hidden checkout tracking codes in its notes tripped ShipStation's security filter. Those codes are no longer stored in the order notes or sent to ShipStation (§07).</li>
+        <li>Changed: when ShipStation rejects one order, the rest of the orders sent with it now go through, and the rejected one is retried once without its note (§07).</li>
+      </ul>
+    </div>
 
     <div class="log-entry">
       <div class="log-date">2026-09-16</div>
