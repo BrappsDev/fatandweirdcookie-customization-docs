@@ -6,7 +6,7 @@
 <title>Fat &amp; Weird Cookie — Odoo Guide</title>
 <meta name="description" content="How Fat & Weird Cookie's Odoo customizations work and how to use them.">
 <!-- maintained by the odoo-customization-docs skill; bump on every production push -->
-<meta name="docs-last-documented" content="2026-09-29">
+<meta name="docs-last-documented" content="2026-10-02">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="masthead">
     <span class="brand">Fat &amp; Weird <em>Cookie</em></span>
     <span class="sub">Odoo Warehouse Guide</span>
-    <span class="stamp" id="stamp">Updated 2026-09-29</span>
+    <span class="stamp" id="stamp">Updated 2026-10-02</span>
   </div>
 </header>
 
@@ -430,13 +430,16 @@ mark{background:#ffe27a;padding:0 2px}
     <h3>Local pickups and part-shipped wholesale orders</h3>
     <div class="lbl">What it does</div>
     <ul>
-      <li>An order handed over for <b>local pickup</b> and marked shipped in ShipStation without a label now closes in Odoo like any other shipment. The carrier is recorded as <b>Pickup</b> and the delivery leaves <b>Ready</b> on the next pass.</li>
+      <li>A <b>local pickup</b> order closes in Odoo when it is marked <b>fulfilled in Shopify</b>, not when it is marked shipped in ShipStation. Until then the delivery stays in <b>Ready</b>, holding its stock. Once closed, the carrier is recorded as <b>Pickup</b>.</li>
+      <li>Odoo never marks a pickup order fulfilled in Shopify itself, so the customer is not sent a &ldquo;your order has shipped&rdquo; email when it is packed.</li>
       <li>A wholesale order that ShipStation split around an item we do not stock no longer waits forever for that leftover piece. Once every part of the order is either shipped or cancelled in ShipStation, Odoo closes the shipped lines and releases the stock they were holding.</li>
-      <li>The same applies to a pickup order that Shopify shows as only partly fulfilled while its ShipStation order is cancelled: the fulfilled lines close, the rest are handled as a short shipment.</li>
+      <li>The same applies to a non-pickup order that Shopify shows as only partly fulfilled while its ShipStation order is cancelled: the fulfilled lines close, the rest are handled as a short shipment.</li>
     </ul>
     <div class="lbl">How to use it</div>
     <ul>
       <li>Nothing new to press. Mark the order shipped, or cancel the leftover part, in ShipStation as you do today.</li>
+      <li>For a local pickup: mark it shipped in ShipStation once it is packed and ready, then mark it fulfilled in Shopify when the customer collects it. Odoo picks up the Shopify fulfilment on its next ShipStation check.</li>
+      <li>A retail pickup only partly fulfilled in Shopify stays open until the rest is collected and fulfilled. A wholesale pickup left partly fulfilled closes the fulfilled lines; the rest follow the <b>Backorder Short Shipments</b> setting.</li>
       <li>What happens to the lines that did not ship follows the <b>Backorder Short Shipments</b> setting under <b>Inventory → Configuration → Settings</b>: on, they move to a backorder; off, they are cancelled.</li>
       <li>A delivery that has already been sitting for a while can be nudged with <span class="chip red">Re-check ShipStation Shipments</span> as described above.</li>
     </ul>
@@ -473,6 +476,15 @@ mark{background:#ffe27a;padding:0 2px}
   <p class="sec-lede">What changed in your Odoo customizations, newest first.</p>
 
   <div class="log">
+
+    <div class="log-entry">
+      <div class="log-date">2026-10-02</div>
+      <h4>Pickup customers no longer get a &ldquo;shipped&rdquo; email</h4>
+      <ul>
+        <li>Fixed: since 2026-09-16, marking a local pickup shipped in ShipStation made Odoo mark the order fulfilled in Shopify, which emailed the customer that their order had shipped and fulfilled the order before it was picked up. Odoo no longer marks pickup orders fulfilled in Shopify (§07).</li>
+        <li>Changed: a local pickup now closes in Odoo when it is fulfilled in Shopify at pickup. Marking it shipped in ShipStation no longer closes it (§07).</li>
+      </ul>
+    </div>
 
     <div class="log-entry">
       <div class="log-date">2026-09-29</div>
