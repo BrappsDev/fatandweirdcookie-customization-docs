@@ -6,7 +6,7 @@
 <title>Fat &amp; Weird Cookie — Odoo Guide</title>
 <meta name="description" content="How Fat & Weird Cookie's Odoo customizations work and how to use them.">
 <!-- maintained by the odoo-customization-docs skill; bump on every production push -->
-<meta name="docs-last-documented" content="2026-10-27">
+<meta name="docs-last-documented" content="2026-11-02">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="masthead">
     <span class="brand">Fat &amp; Weird <em>Cookie</em></span>
     <span class="sub">Odoo Warehouse Guide</span>
-    <span class="stamp" id="stamp">Updated 2026-10-27</span>
+    <span class="stamp" id="stamp">Updated 2026-11-02</span>
   </div>
 </header>
 
@@ -325,6 +325,26 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 
   <div class="card">
+    <h3>Connecting ChatGPT or Claude: the MCP Server app</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>The <b>MCP Server</b> app on the Odoo home screen is where the assistant connection lives. It opens on a dashboard showing whether the connection is switched on, who is connected, which kinds of records the assistant may read, which tools it may use, and how many requests it made this week.</li>
+      <li>The tools list marks each one <span class="chip">Read-only</span>, <span class="chip">Changes data</span> or <span class="chip">Off</span>, so you can see at a glance what the assistant is allowed to do.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Open <b>MCP Server</b> and choose <span class="chip red">Connect an assistant</span> (or the <b>Connect</b> menu). Copy the server address and follow the steps for your assistant: ChatGPT, Claude, Claude Code or another client.</li>
+      <li>When the assistant sends you to Odoo, check that the page names the assistant's own website (for example chatgpt.com) before you click <span class="chip">Allow</span>.</li>
+      <li><b>Activity</b> lists every request your assistant made through your account.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>You only see the app if your Odoo user has assistant access. Until someone connects, the dashboard shows the connection steps instead of an empty screen.</li>
+      <li>The <b>Configuration</b> menu (tools, readable records, connected assistants) is for administrators.</li>
+    </ul>
+  </div>
+
+  <div class="card">
     <h3>Validating receipts and deliveries</h3>
     <div class="lbl">What it does</div>
     <ul>
@@ -509,11 +529,16 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="log">
 
     <div class="log-entry">
-      <div class="log-date">2026-10-27</div>
+      <div class="log-date">2026-10-27 · PENDING PRODUCTION PUSH</div>
       <h4>Sell limited packs before they are packed</h4>
       <ul>
         <li>New: tick <b>Sync Buildable Qty to Shopify</b> on a pack and Shopify shows the packs already made plus the packs the cookies on hand can still make (§08).</li>
-        <li>Fixed: cookies baked between 10-07 and 10-23 were put away into <b>1. Ready to Mix</b> instead of <b>6. Finished Goods</b>, so Finished Goods went below zero as packs were made. They have been moved to Finished Goods, and new cookie batches go to Finished Goods again.</li>
+      </ul>
+      <h4>The assistant connection is now its own app</h4>
+      <ul>
+        <li>New: an <b>MCP Server</b> app on the home screen, with a dashboard of what the assistant can read and do, and a <b>Connect</b> page with step-by-step setup for ChatGPT and Claude (§06).</li>
+        <li>Changed: when an assistant asks for access, the Odoo approval page now shows which website the access is handed to, and warns when the assistant named itself.</li>
+        <li>Tightened: the assistant can no longer total, sort or filter on information it is not allowed to read.</li>
       </ul>
     </div>
 
