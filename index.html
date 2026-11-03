@@ -6,7 +6,7 @@
 <title>Fat &amp; Weird Cookie — Odoo Guide</title>
 <meta name="description" content="How Fat & Weird Cookie's Odoo customizations work and how to use them.">
 <!-- maintained by the odoo-customization-docs skill; bump on every production push -->
-<meta name="docs-last-documented" content="2026-11-02">
+<meta name="docs-last-documented" content="2026-11-03">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="masthead">
     <span class="brand">Fat &amp; Weird <em>Cookie</em></span>
     <span class="sub">Odoo Warehouse Guide</span>
-    <span class="stamp" id="stamp">Updated 2026-11-02</span>
+    <span class="stamp" id="stamp">Updated 2026-11-03</span>
   </div>
 </header>
 
@@ -345,19 +345,24 @@ mark{background:#ffe27a;padding:0 2px}
   </div>
 
   <div class="card">
-    <h3>Validating receipts and deliveries</h3>
+    <h3>Receipts and deliveries</h3>
     <div class="lbl">What it does</div>
     <ul>
       <li>Instead of opening each purchase order or sales order and pressing <b>Validate</b>, you can ask the assistant to validate the receipt or delivery for you — one at a time, or a batch: <em>"validate the receipts for P00445, P00446 and P00447"</em>.</li>
-      <li>It shows you the transfer first: its number, where the goods come from and <b>where they land</b>, every product with the quantity ordered against the quantity counted, and whether anything is short.</li>
+      <li>You can tell it what actually arrived or shipped: <em>"P00445 came in with 6 cases of flour, not 10 — validate it"</em>. It enters your quantities on the matching lines and validates.</li>
+      <li>You can also enter counted quantities without validating yet, move an open receipt or delivery to <b>another warehouse</b>, or <b>cancel</b> one that is still open.</li>
+      <li>It shows you the transfer first: its number, its warehouse, where the goods come from and <b>where they land</b>, every product with the quantity ordered against the quantity counted, and whether anything is short.</li>
     </ul>
     <div class="lbl">Good to know</div>
     <ul>
-      <li>Nothing is validated until you say so. The first answer is always a preview.</li>
+      <li>Nothing is changed until you say so. The first answer is always a preview.</li>
       <li>If an order has <b>more than one</b> open transfer — a backorder, a return, a split delivery — the assistant will not guess. It lists them and asks which one you mean.</li>
-      <li>Transfers that are already validated, or cancelled, are refused and reported rather than skipped over quietly.</li>
-      <li>If nothing has been counted yet, it <b>stops and tells you</b> instead of assuming the full quantity arrived. You have to say explicitly that everything came in.</li>
-      <li>When a transfer is short, the outstanding quantity is kept on a <b>backorder</b> by default, so nothing is lost. Cancelling the remainder is possible, but only if you ask for it.</li>
+      <li>Quantities only go on products already on the transfer. A product that is not on it is refused, never added. Lines you do not mention keep the quantity already on them.</li>
+      <li>For products tracked by lot, give the lot number with each quantity.</li>
+      <li>If nothing has been counted yet, it <b>stops and asks</b> what arrived instead of assuming the full quantity did.</li>
+      <li>When a transfer is short, the assistant <b>asks you</b> whether the rest is still coming. Yes keeps it on a <b>backorder</b>; no cancels the remainder.</li>
+      <li>Moving to another warehouse gives the transfer a new number from that warehouse. It is refused once anything on it is counted, and for a delivery already sent to ShipStation — delete it from ShipStation first. The order itself keeps its original warehouse.</li>
+      <li>Only open transfers can be cancelled. Cancelling a delivery that is in ShipStation deletes it there too. A transfer that is already validated needs a return in Odoo.</li>
       <li>In a batch, each transfer is handled on its own. One that will not validate does not undo the ones that already did — you get a line-by-line result saying which went through and why any did not.</li>
       <li>It goes through Odoo's normal validation, so stock moves and accounting behave exactly as they do when you press the button yourself.</li>
     </ul>
@@ -490,6 +495,25 @@ mark{background:#ffe27a;padding:0 2px}
       <li>Orders placed before this change may still show the hidden codes in their notes in Odoo; they are stripped when the order is sent.</li>
     </ul>
   </div>
+  <div class="card">
+    <h3>Kit orders in ShipStation show what was ordered</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>A kit product is shipped as the products it is made from, so ShipStation used to show only the product being picked. A <b>Baker's Choice 4pk</b> order, for example, came through as the <b>Bakers Choice Add on (#1)</b> pack, and shipping could not tell which sticker it needed.</li>
+      <li>Each line that comes from a kit now names both: <b>Ordered: Baker's Choice 4pk / Pick: Bakers Choice Add on (#1)</b>.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Pick the product after <b>Pick:</b>, and pack or label it as the product after <b>Ordered:</b>.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>The SKU on the line is still the product being picked.</li>
+      <li>Products that are not kits, including Shopify bundles, show their plain name as before.</li>
+      <li>The names come from the product names in Odoo, so renaming a product changes what ShipStation shows.</li>
+      <li>Orders already sent to ShipStation before this change keep their old line names.</li>
+    </ul>
+  </div>
 </section>
 
 <!-- ============================ 08 SHOPIFY STOCK ============================ -->
@@ -529,7 +553,18 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="log">
 
     <div class="log-entry">
-      <div class="log-date">2026-10-27 · PENDING PRODUCTION PUSH</div>
+      <div class="log-date">2026-11-03 · PENDING PRODUCTION PUSH</div>
+      <h4>More you can do on receipts and deliveries; kit orders in ShipStation</h4>
+      <ul>
+        <li>New: kit lines in ShipStation name the product that was ordered as well as the one to pick, e.g. <b>Ordered: Baker's Choice 4pk / Pick: Bakers Choice Add on (#1)</b> (§07).</li>
+        <li>New: tell the assistant what actually arrived or shipped, and it enters those quantities before validating (§06).</li>
+        <li>New: the assistant can enter counted quantities without validating, move an open receipt or delivery to another warehouse, and cancel an open one (§06).</li>
+        <li>Changed: when a transfer is short, the assistant now asks whether the rest is still coming instead of keeping a backorder by default (§06).</li>
+      </ul>
+    </div>
+
+    <div class="log-entry">
+      <div class="log-date">2026-10-27</div>
       <h4>Sell limited packs before they are packed</h4>
       <ul>
         <li>New: tick <b>Sync Buildable Qty to Shopify</b> on a pack and Shopify shows the packs already made plus the packs the cookies on hand can still make (§08).</li>
