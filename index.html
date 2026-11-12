@@ -6,7 +6,7 @@
 <title>Fat &amp; Weird Cookie — Odoo Guide</title>
 <meta name="description" content="How Fat & Weird Cookie's Odoo customizations work and how to use them.">
 <!-- maintained by the odoo-customization-docs skill; bump on every production push -->
-<meta name="docs-last-documented" content="2026-11-04">
+<meta name="docs-last-documented" content="2026-11-12">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -108,7 +108,7 @@ mark{background:#ffe27a;padding:0 2px}
   <div class="masthead">
     <span class="brand">Fat &amp; Weird <em>Cookie</em></span>
     <span class="sub">Odoo Warehouse Guide</span>
-    <span class="stamp" id="stamp">Updated 2026-11-04</span>
+    <span class="stamp" id="stamp">Updated 2026-11-12</span>
   </div>
 </header>
 
@@ -517,6 +517,28 @@ mark{background:#ffe27a;padding:0 2px}
       <li>Orders already sent to ShipStation before this change keep their old lines.</li>
     </ul>
   </div>
+  <div class="card">
+    <h3>Gift messages on packing slips</h3>
+    <div class="lbl">What it does</div>
+    <ul>
+      <li>When a Shopify customer adds a gift message at checkout, the order's note in Odoo, and the packing slip printed from ShipStation, show only this, in this order:<br><b>Gift note</b><br><b>To:</b> who the gift is for<br><b>From:</b> who sent it<br><b>Message:</b> the message</li>
+      <li>The buyer's email and phone number, and the gift app's own delivery details, are left off, so the slip no longer looks like raw data.</li>
+      <li><b>From</b> is always shown on a gift order, even when the customer left it blank. <b>To</b> and <b>Message</b> are left off when they are empty.</li>
+      <li>The gift app often adds the message a few seconds after the order reaches Odoo. When it does, Odoo adds the gift note to the order as soon as it arrives. If the delivery is already in ShipStation and has not shipped, Odoo sends it again so the slip shows the message.</li>
+      <li>Other notes on the order, such as a PO number, still come through as before.</li>
+    </ul>
+    <div class="lbl">How to use it</div>
+    <ul>
+      <li>Nothing new to press. Print slips from ShipStation as you do today.</li>
+      <li>If a gift order's slip is missing its message, check the sale order's note in Odoo. If the gift note is missing there too, type it in. Then open the delivery, press <span class="chip red">Update Shipstation</span> and reprint the slip.</li>
+    </ul>
+    <div class="lbl">Good to know</div>
+    <ul>
+      <li>Sending a delivery to ShipStation again replaces that order in ShipStation, so any changes made to it by hand in ShipStation are lost. This is the same as pressing <span class="chip">Update Shipstation</span>.</li>
+      <li>The gift note is added once. If the customer changes the message in Shopify afterwards, update the note in Odoo by hand.</li>
+      <li>Orders placed before Oct 21 keep their older notes, which list every gift field.</li>
+    </ul>
+  </div>
 </section>
 
 <!-- ============================ 08 SHOPIFY STOCK ============================ -->
@@ -563,6 +585,15 @@ mark{background:#ffe27a;padding:0 2px}
         <li>Changed: the assistant can only save a change it has previewed to you first, and a repeated request no longer creates a duplicate (§06).</li>
         <li>Changed: administrators choose which kinds of records the assistant may change, with <b>Allow Writes</b> under Readable Models (§06).</li>
         <li>Changed: Odoo API keys no longer connect an assistant; every connection uses the Odoo sign-in and approval page (§06).</li>
+      </ul>
+    </div>
+
+    <div class="log-entry">
+      <div class="log-date">2026-11-12</div>
+      <h4>Gift messages on packing slips</h4>
+      <ul>
+        <li>Changed: a gift order's note and ShipStation packing slip show only <b>Gift note</b>, <b>To</b>, <b>From</b> and <b>Message</b>; the buyer's email and phone are left off (§07). Live since Oct 21.</li>
+        <li>Fixed: when the gift message arrives in Odoo a few seconds after the order, it is now added to the order, and a delivery already in ShipStation is sent again so the slip shows it (§07).</li>
       </ul>
     </div>
 
